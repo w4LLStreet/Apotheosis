@@ -22,3 +22,7 @@ There are still bugs to be found. Please add any you come across to Issues.
 
 Example Usage: <code>$ ./apotheosis 1234 </code>
 Runs script on artist with id=1234
+
+# This is a work in progress
+
+Forked from the original apotheosis https://github.com/Suit-Of-Sables/apotheosis
