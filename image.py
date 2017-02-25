@@ -3,7 +3,7 @@ import mechanize
 from contextlib2 import suppress
 from cStringIO import StringIO
 from classes import Artist, Album
-from config import artist_page, torrents_page, pth_auth, ptpimg_api_key
+from config import artist_page, torrents_page, nw_auth, ptpimg_api_key
 
 
 def missing(image):
@@ -58,9 +58,9 @@ def get(target, lastfm):
     return image
 
 
-def edit(target, pth):
+def edit(target, nw):
     url = target.edit_url
-    r = pth.session.get(url, data={'auth': pth_auth})
+    r = nw.session.get(url, data={'auth': nw_auth})
     forms = mechanize.ParseFile(StringIO(r.text.encode('utf-8')), url)
 
     form = get_image_field(forms)
@@ -68,7 +68,7 @@ def edit(target, pth):
     form['image'] = target.image
     form['summary'] = 'added rehosted image from last.fm'
     _, data, headers = form.click_request_data()
-    pth.session.post(url, data=data, headers=dict(headers))
+    nw.session.post(url, data=data, headers=dict(headers))
 
 
 def rehost(image_url):
@@ -112,7 +112,7 @@ def get_image_source(target, lastfm):
     return image_source
 
 
-def fix(target, pth, lastfm):
+def fix(target, nw, lastfm):
         if needs_new(target.image):
             target.image = get_new_image(target, lastfm)
             if target.image is None:
@@ -123,7 +123,7 @@ def fix(target, pth, lastfm):
                 new_image = True
         else:
             new_image = False
-        if pth_auth is not None:
+        if nw_auth is not None:
             if needs_rehost(target.image):
                 if not new_image:
                     print target.image
@@ -134,5 +134,5 @@ def fix(target, pth, lastfm):
                     print "failed to rehost image :( What could be the problem?\n"
                     return
         print "adding ...",
-        edit(target, pth)
+        edit(target, nw)
         print "done!\n"

@@ -67,7 +67,7 @@ class LoginException(Exception):
 class RequestException(Exception):
     pass
 
-class PthAPI:
+class NwAPI:
     def __init__(self, username=None, password=None):
         self.session = requests.Session()
         self.session.headers.update(headers)
@@ -76,14 +76,14 @@ class PthAPI:
         self.authkey = None
         self.passkey = None
         self.userid = None
-        self.tracker = "https://please.passtheheadphones.me/"
+        self.tracker = "https://definitely.notwhat.cd/"
         self.last_request = time.time()
         self.rate_limit = 2.0 # seconds between requests
         self._login()
 
     def _login(self):
         '''Logs in user and gets authkey from server'''
-        loginpage = 'https://passtheheadphones.me/login.php'
+        loginpage = 'https://notwhat.cd/login.php'
         data = {'username': self.username,
                 'password': self.password}
         r = self.session.post(loginpage, data=data)
@@ -95,14 +95,14 @@ class PthAPI:
         self.userid = accountinfo['id']
 
     def logout(self):
-        self.session.get("https://passtheheadphones.me/logout.php?auth=%s" % self.authkey)
+        self.session.get("https://notwhat.cd/logout.php?auth=%s" % self.authkey)
 
     def request(self, action, **kwargs):
         '''Makes an AJAX request at a given action page'''
         while time.time() - self.last_request < self.rate_limit:
             time.sleep(0.1)
 
-        ajaxpage = 'https://passtheheadphones.me/ajax.php'
+        ajaxpage = 'https://notwhat.cd/ajax.php'
         params = {'action': action}
         if self.authkey:
             params['auth'] = self.authkey
@@ -149,7 +149,7 @@ class PthAPI:
         else:
             media_params = ['&media=%s' % media_search_map[m] for m in media]
 
-        url = 'https://passtheheadphones.me/torrents.php?type=%s&userid=%s&format=FLAC' % (source, self.userid)
+        url = 'https://notwhat.cd/torrents.php?type=%s&userid=%s&format=FLAC' % (source, self.userid)
         for mp in media_params:
             page = 1
             done = False
@@ -163,7 +163,7 @@ class PthAPI:
                 page += 1
 
     def upload(self, group, torrent, new_torrent, format, description=[]):
-        url = "https://passtheheadphones.me/upload.php?groupid=%s" % group['group']['id']
+        url = "https://notwhat.cd/upload.php?groupid=%s" % group['group']['id']
         response = self.session.get(url)
         forms = mechanize.ParseFile(StringIO(response.text.encode('utf-8')), url)
         form = forms[-1]
@@ -187,7 +187,7 @@ class PthAPI:
         return self.session.post(url, data=data, headers=dict(headers))
 
     def set_24bit(self, torrent):
-        url = "https://passtheheadphones.me/torrents.php?action=edit&id=%s" % torrent['id']
+        url = "https://notwhat.cd/torrents.php?action=edit&id=%s" % torrent['id']
         response = self.session.get(url)
         forms = mechanize.ParseFile(StringIO(response.text.encode('utf-8')), url)
         form = forms[-1]
@@ -196,10 +196,10 @@ class PthAPI:
         return self.session.post(url, data=data, headers=dict(headers))
 
     def release_url(self, group, torrent):
-        return "https://passtheheadphones.me/torrents.php?id=%s&torrentid=%s#torrent%s" % (group['group']['id'], torrent['id'], torrent['id'])
+        return "https://notwhat.cd/torrents.php?id=%s&torrentid=%s#torrent%s" % (group['group']['id'], torrent['id'], torrent['id'])
 
     def permalink(self, torrent):
-        return "https://passtheheadphones.me/torrents.php?torrentid=%s" % torrent['id']
+        return "https://notwhat.cd/torrents.php?torrentid=%s" % torrent['id']
 
 def unescape(text):
     return HTMLParser.HTMLParser().unescape(text)

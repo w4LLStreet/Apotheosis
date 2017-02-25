@@ -1,17 +1,17 @@
 from re import sub
-from config import pth_auth, artist_page
+from config import nw_auth, artist_page
 
 def missing(artist):
     return artist.bio == ''
 
-def add(artist, lastfm, pth):
+def add(artist, lastfm, nw):
     bio = get(artist.name, lastfm)
     if bio == None:
         print "failed to get bio :("
         print "Perhaps there is no bio for this artist on last.fm right now.(?)\n"
         return          # failed to get bio
     artist.bio = to_bbcode(bio)
-    edit(artist, pth)
+    edit(artist, nw)
 
 def get(artist_name, lastfm):
     try:
@@ -29,12 +29,12 @@ def to_bbcode(bio):
     bio = bio.replace(s, '[size=1]' + s + '[/size]')
     return bio
 
-def edit(artist, pth):
+def edit(artist, nw):
     data = {'action' : 'edit',
-            'auth' : pth_auth,
+            'auth' : nw_auth,
             'artistid' : artist.id,
             'body' : artist.bio,
             'image' : artist.image,
             'summary' : 'added artist bio from last.fm'}
-    r = pth.session.post(artist_page, data=data)
+    r = nw.session.post(artist_page, data=data)
     print "added!\n"

@@ -1,7 +1,7 @@
-from config import max_to_add, min_score, artist_page, pth_auth
+from config import max_to_add, min_score, artist_page, nw_auth
 
 def find(artist, lastfm):
-    # get list of current similar artists on PTH
+    # get list of current similar artists on NW
     cur_similar = artist.similar_artists
 
     # get list of at most max_to_add similar artist from last.fm
@@ -15,13 +15,13 @@ def find(artist, lastfm):
 
     return new_similar
 
-def add(artist, new_similar, pth):
+def add(artist, new_similar, nw):
 
     data = {'action' : 'add_similar',
-            'auth' : pth_auth,
+            'auth' : nw_auth,
             'artistid' : artist.id,
             'artistname': ''}
 
     for artist in new_similar:
         data['artistname'] = artist
-        r = pth.session.post(artist_page, data=data)
+        r = nw.session.post(artist_page, data=data)

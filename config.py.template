@@ -1,15 +1,15 @@
 # Don't forget to put quotes around it if it's a string!
 
-#[pth]
-pth_username =
-pth_password =
+#[nw]
+nw_username =
+nw_password =
 # you can find this inspecting the html of an edit form on the site
 # try a search for 'auth' near the form tags
 # are these unique for each user? Do they change?
-pth_auth =
+nw_auth =
 # no need to change artist_page
-artist_page = 'https://passtheheadphones.me/artist.php'
-torrents_page = 'https://passtheheadphones.me/torrents.php'
+artist_page = 'https://notwhat.cd/artist.php'
+torrents_page = 'https://notwhat.cd/torrents.php'
 
 #[last.fm]
 # You have to have your own unique two values for API_KEY and API_SECRET
